@@ -1,0 +1,1 @@
+web: gunicorn lawyerInfo.wsgi --log-file -
