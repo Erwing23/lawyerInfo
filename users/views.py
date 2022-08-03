@@ -7,6 +7,6 @@ def home(request):
     return render(request,"users/home.html")
 
 def salir(request):
-    print(request.body)
+    print(request.user.get_full_name())
     logout(request)
     return redirect("/home")
