@@ -1,74 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>CodePen - A Pen by Mohithpoojary</title>
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css"
-    />
-    {% load static %}
-    <link rel="stylesheet" href="{%static 'styles/style.css'%}" />
-  </head>
-  <body>
-    <!-- partial:index.partial.html -->
-    <div class="container">
-      <div class="screen">
-        <div class="screen__content">
-          <form class="login" method="post">
-            {% csrf_token %}
-            <div class="login__field">
-              <i class="login__icon fas fa-user"></i>
-              <input
-                type="text"
-                class="login__input"
-                placeholder="User name / Email"
-                name="username"
-              />
+{% extends 'layouts/base-fullscreen.html' %} {% block title %} Sign IN ASIDE THE
+PAGE {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+{% load static %}
+<div class="container position-sticky z-index-sticky top-0">
+  <div class="row">
+    <div class="col-12">
+      {% include "includes/navigation-fullscreen.html" %}
+    </div>
+  </div>
+</div>
+
+<main class="main-content mt-0">
+    
+  <section>
+    <div class="page-header min-vh-75">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+            <div class="card card-plain mt-8">
+              <div class="card-header pb-0 text-left bg-transparent">
+                <h3 class="font-weight-bolder text-info text-gradient">
+                  Welcome back
+                </h3>
+                <p class="mb-0">Enter your email and password to sign in</p>
+              </div>
+              <div class="card-body">
+                <form role="form">
+                  <label>Email</label>
+                  <div class="mb-3">
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Email"
+                      aria-label="Email"
+                      aria-describedby="email-addon"
+                    />
+                  </div>
+                  <label>Password</label>
+                  <div class="mb-3">
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Password"
+                      aria-label="Password"
+                      aria-describedby="password-addon"
+                    />
+                  </div>
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="rememberMe"
+                      checked=""
+                    />
+                    <label class="form-check-label" for="rememberMe"
+                      >Remember me</label
+                    >
+                  </div>
+                  <div class="text-center">
+                    <button
+                      type="button"
+                      class="btn bg-gradient-info w-100 mt-4 mb-0"
+                    >
+                      Sign in
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                <p class="mb-4 text-sm mx-auto">
+                  Don't have an account?
+                  <a
+                    href="/sign-up.html"
+                    class="text-info text-gradient font-weight-bold"
+                    >Sign UP</a
+                  >
+                </p>
+              </div>
             </div>
-            <div class="login__field">
-              <i class="login__icon fas fa-lock"></i>
-              <input
-                type="password"
-                class="login__input"
-                placeholder="Password"
-                name="password"
-              />
-            </div>
-            <button class="button login__submit">
-              <span class="button__text">Log In Now</span>
-              <i class="button__icon fas fa-chevron-right"></i>
-            </button>
-          </form>
-          <div class="social-login">
-            <h3>log in via</h3>
-            <div class="social-icons">
-              <a href="#" class="social-login__icon fab fa-instagram"></a>
-              <a href="#" class="social-login__icon fab fa-facebook"></a>
-              <a href="#" class="social-login__icon fab fa-twitter"></a>
+          </div>
+          <div class="col-md-6">
+            <div
+              class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8"
+            >
+             
+              <div
+                class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
+                style="
+                  background-image: url('{% static "media/curved6.jpg" %}');
+                "
+              ></div>
             </div>
           </div>
         </div>
-        <div class="screen__background">
-          <span
-            class="screen__background__shape screen__background__shape4"
-          ></span>
-          <span
-            class="screen__background__shape screen__background__shape3"
-          ></span>
-          <span
-            class="screen__background__shape screen__background__shape2"
-          ></span>
-          <span
-            class="screen__background__shape screen__background__shape1"
-          ></span>
-        </div>
       </div>
     </div>
-    <!-- partial -->
-  </body>
-</html>
+  </section>
+</main>
+
+{% include "includes/footer-fullscreen.html" %} {% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+{% endblock javascripts %}
