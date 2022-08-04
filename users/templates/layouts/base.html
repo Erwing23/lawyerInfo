@@ -20,6 +20,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    {% load static %}
     <link
       rel="apple-touch-icon"
       sizes="76x76"
@@ -34,29 +35,31 @@
     <title>Soft UI Dashboard - {% block title %}{% endblock %} | AppSeed</title>
 
     <!--     Fonts and icons     -->
+
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
       rel="stylesheet"
     />
     <!-- Nucleo Icons -->
-    <link href="{{ ASSETS_ROOT }}/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="{{ ASSETS_ROOT }}/css/nucleo-svg.css" rel="stylesheet" />
+
+    <link href="{% static 'styles/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href=" {% static 'styles/nucleo-svg.css' %}" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <script
       src="https://kit.fontawesome.com/42d5adcbca.js"
       crossorigin="anonymous"
     ></script>
-    <link href="{{ ASSETS_ROOT }}/css/nucleo-svg.css" rel="stylesheet" />
+    <link href=" {% static 'styles/nucleo-svg.css' %}" rel="stylesheet" />
     <!-- CSS Files -->
     <link
       id="pagestyle"
-      href="{{ ASSETS_ROOT }}/css/soft-ui-dashboard.css?v=1.0.6"
+      href="{% static 'styles/soft-ui-dashboard.css' %}"
       rel="stylesheet"
     />
 
     <link
       id="pagestyle_dark"
-      href="{{ ASSETS_ROOT }}/css/dark-theme-core.css"
+      href="{% static 'styles/dark-theme-core.css' %}/"
       rel="stylesheet"
     />
 
@@ -69,8 +72,8 @@
     <main
       class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
     >
-      {% include "includes/navigation.html" %} {% block content %}{% endblock
-      content %}
+      {% include "includes/navigation.html" %} {% block content %}
+      <!-- -->{% endblock content %}
     </main>
 
     <!-- APP Configurator -->
@@ -93,7 +96,7 @@
     </script>
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{ ASSETS_ROOT }}/js/soft-ui-dashboard.min.js?v=1.0.6"></script>
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc 
+    <script src="{{ ASSETS_ROOT }}/js/soft-ui-dashboard.min.js?v=1.0.6"></script>-->
   </body>
 </html>

@@ -61,9 +61,11 @@ class Estado(models.Model):
         INACTIVO = "2", "INACTIVO"
         ABIERTO = "3", "ABIERTO"
         CERRADO = "4", "CERRADO"
-
+    status = models.CharField(max_length=2,
+        choices=Status.choices,
+        default=Status.ACTIVO )
     def __str__(self):
-        return self.User.username
+        return self.status
 
 
 

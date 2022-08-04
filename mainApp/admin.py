@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Caso, Organizacion, PowerUp, Aprobaciones, Contacto
+from .models import Caso, Organizacion, PowerUp, Aprobaciones, Contacto, Estado
 # Register your models here.
 
 class CasoAdmin(admin.ModelAdmin):
@@ -25,3 +25,5 @@ class PowerUpAdmin(admin.ModelAdmin):
     list_display = ("id","name")
 
 admin.site.register(PowerUp,PowerUpAdmin)
+
+admin.site.register(Estado)
