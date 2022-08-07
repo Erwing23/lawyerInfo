@@ -4,7 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout 
 from django.http import HttpResponse
 
-from mainApp.models import PowerUp , User
+
+from mainApp.forms import CasoForm
+from mainApp.models import PowerUp , User, Caso, Organizacion
 import requests
 
 # Create your views here.
@@ -22,11 +24,31 @@ def salir(request):
 
 @login_required
 def tableCaso(request):
-    return render(request,"users/tables.html")
+    username = request.user.username
+    print("Dueño caso", username)
+    #Contexto
+    casoQS = Caso.objects.filter(dueñoCaso__username = username)
+    form = CasoForm()
+    form.fields['organizacionName'].queryset = Organizacion.objects.filter(organizacionUser__username=username)
+    context = {"casos":casoQS,"form":form}
+    return render(request,"users/tables.html",context)
 
+@login_required
 def powerUp(request):
+    print(request.user.username+" Request Try")
+    return render(request,"users/tables.html")
    
-    print(request.user.username)
-    return "Hello"
-   # return render(request,"users/tables.html")
+
+#CRUD DE CASOS
+@login_required
+def createCaso(request):
+    print("Vamos por ese form")
+    return render(request,"users/createCaso.html")
+   
+@login_required
+def updateCaso(request,id):
+    print("Vamos por ese update")
+    print("Caso: ", id)
+    return render(request,"users/createCaso.html")
+   
 

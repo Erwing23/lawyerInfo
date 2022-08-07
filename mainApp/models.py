@@ -71,17 +71,25 @@ class Aprobaciones(models.Model): #CONTACTO - ESTADO
     contactoQueAprueba = models.ForeignKey(Contacto, on_delete=models.CASCADE)  # new
     status = models.CharField(max_length=5, choices=ESTADO_APROBACIONES, default=ABIERTO,)
     def __str__(self):
-        return self.User.username
+        return self.contactoQueAprueba.nombre
 class Caso(models.Model):
+    ACTIVO = 'ACT'
+    CERRADO = 'CERR'
+
+    ESTADO_APROBACIONES = [
+        (ACTIVO, 'ACTIVO'),
+        (CERRADO, 'INACTIVO'),     
+    ]
     dueñoCaso = models.ForeignKey(User, on_delete=models.CASCADE)  # new
     organizacionName = models.ForeignKey(Organizacion, on_delete=models.CASCADE, null=True) 
     aprobaciones = models.ForeignKey(Aprobaciones, on_delete=models.CASCADE, null= True)
     idCaso = models.CharField(max_length = 254)
+    status = models.CharField(max_length=5, choices=ESTADO_APROBACIONES, default=ACTIVO,)
     tramite = models.CharField(max_length = 254) # PDF 
     fecha_inicio = models.DateField(auto_now_add=True)# CUANDO SE NOW()
     fecha_fin = models.DateField(blank=True) # BLANCO HASTA CAMBIAR DE ESTADO CERRADO
     def __str__(self):
-        return self.tramite + self.dueñoCaso.username
+        return self.tramite+" " + self.dueñoCaso.username
     
 class PowerUp(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)  # new
