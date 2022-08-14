@@ -17,7 +17,6 @@ def home(request):
 def salir(request):
     username = request.user.username
     pw = PowerUp.objects.filter(User__username = username)
-
     print(pw)
     logout(request)
     return redirect("/")
@@ -25,7 +24,6 @@ def salir(request):
 @login_required
 def tableCaso(request):
     username = request.user.username
-    print("Dueño caso", username)
     #Contexto
     casoQS = Caso.objects.filter(dueñoCaso__username = username)
     form = CasoForm()
@@ -43,12 +41,21 @@ def powerUp(request):
 @login_required
 def createCaso(request):
     print("Vamos por ese form")
-    return render(request,"users/createCaso.html")
+    if request.method == 'POST':
+        form = CasoForm(request.POST)
+        if form.is_valid():
+            caso = form.save(commit=False)
+            caso.dueñoCaso = request.user
+            form.save()
+
+    return  redirect("/tableCaso")
    
 @login_required
 def updateCaso(request,id):
-    print("Vamos por ese update")
+    
     print("Caso: ", id)
-    return render(request,"users/createCaso.html")
+    context = Caso.objects.get(idCaso = id)
+    
+    return render(request,"users/update.html")
    
 

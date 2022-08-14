@@ -43,7 +43,6 @@ class Contacto(models.Model):
     ESTADO_CONTACTO = [
         (ACTIVO, 'ACTIVO'),
         (INACTIVO, 'INACTIVO'),
-        
     ]
     User = models.ForeignKey(User, on_delete=models.CASCADE)  # new
     organizacionName = models.ForeignKey(Organizacion, on_delete=models.CASCADE,  null=True)  # new
@@ -70,11 +69,13 @@ class Aprobaciones(models.Model): #CONTACTO - ESTADO
     User = models.ForeignKey(User, on_delete=models.CASCADE)
     contactoQueAprueba = models.ForeignKey(Contacto, on_delete=models.CASCADE)  # new
     status = models.CharField(max_length=5, choices=ESTADO_APROBACIONES, default=ABIERTO,)
+
     def __str__(self):
-        return self.contactoQueAprueba.nombre
+        return self.contactoQueAprueba.nombre + " " + self.contactoQueAprueba.departamento
 class Caso(models.Model):
     ACTIVO = 'ACT'
     CERRADO = 'CERR'
+    
 
     ESTADO_APROBACIONES = [
         (ACTIVO, 'ACTIVO'),
@@ -87,9 +88,9 @@ class Caso(models.Model):
     status = models.CharField(max_length=5, choices=ESTADO_APROBACIONES, default=ACTIVO,)
     tramite = models.CharField(max_length = 254) # PDF 
     fecha_inicio = models.DateField(auto_now_add=True)# CUANDO SE NOW()
-    fecha_fin = models.DateField(blank=True) # BLANCO HASTA CAMBIAR DE ESTADO CERRADO
+    fecha_fin = models.DateField(null=True,blank=True) # BLANCO HASTA CAMBIAR DE ESTADO CERRADO
     def __str__(self):
-        return self.tramite+" " + self.dueñoCaso.username
+        return "Caso: "+self.tramite+" " + self.dueñoCaso.username
     
 class PowerUp(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)  # new

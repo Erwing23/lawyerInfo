@@ -4,19 +4,70 @@
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
 <!--   -->
 {% load static %}
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Crear Caso</h5>
+        <button
+          type="button"
+          class="btn-close text-dark"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/tableCaso/createCaso/" method="POST">
+          {% csrf_token %} {{ form.as_p }}
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn bg-gradient-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn bg-gradient-primary">
+              Crear Caso
+            </button>
+          </div>
+        </form>
+
+        <!--
+
+
+        -->
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container-fluid py-4">
   <div class="row">
     <div class="col-12">
       <div class="card mb-4">
         <div class="card-header pb-0">
           <h6>Tabla de Casos</h6>
-          <a
-            href="{%url 'createCaso'%}"
-            class="btn btn-icon btn-2 btn-secondary"
+
+          <!-- Boton para Modal de Crear Caso-->
+          <button
+            type="button"
+            class="btn bg-gradient-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
           >
-            Crear
-            <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
-          </a>
+            Crear Caso <i class="ni ni-fat-add"></i>
+          </button>
         </div>
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">
@@ -75,45 +126,45 @@
               <tbody>
                 {% for caso in casos %}
                 <!--    -->
-                {% if caso.status == 'ACT' %}
+
                 <!--    -->
                 <tr>
+                  {% if caso.status == 'ACT' %}
                   <td class="align-middle text-center text-sm">
                     <span class="badge badge-sm bg-gradient-success">
                       {{caso.get_status_display}}</span
                     >
+                    <!--    -->
+                    {% else %}
+                  </td>
+
+                  <td class="align-middle text-center text-sm">
+                    <span class="badge badge-sm bg-gradient-danger">
+                      {{caso.get_status_display}}</span
+                    >
+                    {% endif %}
                   </td>
                   <td class="align-middle text-center">
                     <h7>{{caso.idCaso}} </h7>
                   </td>
                   <td class="align-middle text-center">
-                    <p class="text-xs font-weight-bold mb-0">
-                      {{caso.organizacionName}}
-                    </p>
+                    <h7> {{caso.organizacionName}} </h7>
                   </td>
 
                   <td class="align-middle text-center">
-                    <span class="text-secondary text-xs font-weight-bold">
-                      {{caso.tramite}}
-                    </span>
+                    <h7> {{caso.tramite}} </h7>
                   </td>
 
                   <td class="align-middle text-center">
                     {{caso.aprobaciones}}
-                    <p class="text-xs font-weight-bold mb-0">Manager</p>
-                    <p class="text-xs text-secondary mb-0">Organization</p>
                   </td>
 
                   <td class="align-middle text-center">
-                    <span class="text-secondary text-xs font-weight-bold">
-                      11/01/19
-                    </span>
+                    <h7> {{caso.fecha_inicio}} </h7>
                   </td>
 
                   <td class="align-middle text-center">
-                    <span class="text-secondary text-xs font-weight-bold">
-                      11/01/22
-                    </span>
+                    <h7> {{caso.fecha_fin}} </h7>
                   </td>
 
                   <td class="align-middle text-center">
@@ -127,9 +178,10 @@
                     </a>
                   </td>
 
-                  <td class="align-middle text-center">
+                  <td class="align-middle text-left">
+                    <!--
                     <a
-                      href="{%url 'createCaso'%}"
+                      href="{%url 'updateCaso' id=caso.idCaso %}"
                       class="btn btn-icon btn-2 btn-secondary"
                     >
                       Editar
@@ -137,9 +189,75 @@
                         ><i class="ni ni-fat-add"></i
                       ></span>
                     </a>
+                    -->
+
+                    <div
+                      class="modal fade"
+                      id="exampleModal{{caso.id}}"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div
+                        class="modal-dialog modal-dialog-centered"
+                        role="document"
+                      >
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                              Crear Caso {{caso.tramite}}
+                            </h5>
+                            <button
+                              type="button"
+                              class="btn-close text-dark"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form action="/tableCaso/createCaso/" method="POST">
+                              {% csrf_token %} {{ form.as_p }}
+
+                              <div class="modal-footer">
+                                <button
+                                  type="button"
+                                  class="btn bg-gradient-secondary"
+                                  data-bs-dismiss="modal"
+                                >
+                                  Close
+                                </button>
+                                <button
+                                  type="submit"
+                                  class="btn bg-gradient-primary"
+                                >
+                                  Crear Caso
+                                </button>
+                              </div>
+                            </form>
+
+                            <!--
+
+
+        -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn bg-gradient-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal{{caso.id}}"
+                    >
+                      Editar Caso <i class="ni ni-fat-add"></i>
+                    </button>
                   </td>
                 </tr>
-                <!--    -->{% endif %}
+
                 <!--    -->{% endfor %}
                 <tr>
                   <td class="align-middle text-center text-sm">
@@ -457,12 +575,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-      <div class="card mb-4">Pilas con eso</div>
     </div>
   </div>
 
