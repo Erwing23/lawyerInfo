@@ -5,8 +5,8 @@ from django.contrib.auth import logout
 from django.http import HttpResponse
 
 
-from mainApp.forms import CasoForm
-from mainApp.models import PowerUp , User, Caso, Organizacion
+from mainApp.forms import CasoForm, ContactoForm, OrganizacionForm
+from mainApp.models import PowerUp , User, Caso, Organizacion, Contacto, Aprobaciones
 import requests
 
 # Create your views here.
@@ -20,7 +20,7 @@ def salir(request):
     print(pw)
     logout(request)
     return redirect("/")
-
+#Rendering Caso
 @login_required
 def tableCaso(request):
     username = request.user.username
@@ -28,19 +28,51 @@ def tableCaso(request):
     casoQS = Caso.objects.filter(dueñoCaso__username = username)
     form = CasoForm()
     form.fields['organizacionName'].queryset = Organizacion.objects.filter(organizacionUser__username=username)
-    context = {"casos":casoQS,"form":form}
+    print(casoQS[0].pk )
+
+    casos = [
+    {'aprobaciones': Aprobaciones.objects.filter(caso__id = caso.pk),
+    'id': caso.pk, 
+    'organizacionName': caso.organizacionName, 
+    'tramite': caso.tramite, 
+    'status': caso.get_status_display(),
+    'fecha_inicio' : caso.fecha_inicio,
+    } 
+    for caso in casoQS]
+    context = {"casos":casos,"form":form}
     return render(request,"users/tables.html",context)
+
+#Rendering Contactos
+@login_required
+def tableContacto(request):
+    username = request.user.username
+    #Contexto
+    contactoQS = Contacto.objects.filter(User__username = username)
+    form = ContactoForm()
+    form.fields['organizacionName'].queryset = Organizacion.objects.filter(organizacionUser__username=username)
+    context = {"contactos":contactoQS,"form":form}
+    return render(request,"users/tableContactos.html",context)
+
+#Rendering Organizaciones
+@login_required
+def tableOrganizacion(request):
+    username = request.user.username
+    #Contexto
+    organizacionQS = Organizacion.objects.filter(organizacionUser__username = username)
+    form = OrganizacionForm()
+    context = {"organizaciones":organizacionQS,"form":form}
+    return render(request,"users/tableOrganizaciones.html",context)
+
 
 @login_required
 def powerUp(request):
     print(request.user.username+" Request Try")
-    return render(request,"users/tables.html")
+    return render(request,"users/powerUps.html")
    
 
 #CRUD DE CASOS
 @login_required
 def createCaso(request):
-    print("Vamos por ese form")
     if request.method == 'POST':
         form = CasoForm(request.POST)
         if form.is_valid():
@@ -59,3 +91,28 @@ def updateCaso(request,id):
     return render(request,"users/update.html")
    
 
+#CRUD CONTACTO
+@login_required
+def createContacto(request):
+    if request.method == 'POST':
+        form = ContactoForm(request.POST)
+        if form.is_valid():
+            contacto = form.save(commit=False)
+            contacto.User = request.user
+            form.save()
+
+    return  redirect("/tableContactos")
+
+
+#CRUD Organizaciones
+@login_required
+def createOrganizacion(request):
+    if request.method == 'POST':
+        form = OrganizacionForm(request.POST)
+        if form.is_valid():
+            organizacion = form.save(commit=False)
+            organizacion.organizacionUser = request.user
+            form.save()
+
+    return  redirect("/tableOrganizaciones")
+  

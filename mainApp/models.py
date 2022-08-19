@@ -55,23 +55,7 @@ class Contacto(models.Model):
     def __str__(self):
         return self.nombre + " " +self.organizacionName.nombre
 
-class Aprobaciones(models.Model): #CONTACTO - ESTADO
-    ABIERTO = 'ABI'
-    CERRADO = 'CERR'
 
-    ESTADO_APROBACIONES = [
-        (ABIERTO, 'ACTIVO'),
-        (CERRADO, 'INACTIVO'),
-        
-    ]
-    class Meta:
-        verbose_name_plural = "Aprobaciones"
-    User = models.ForeignKey(User, on_delete=models.CASCADE)
-    contactoQueAprueba = models.ForeignKey(Contacto, on_delete=models.CASCADE)  # new
-    status = models.CharField(max_length=5, choices=ESTADO_APROBACIONES, default=ABIERTO,)
-
-    def __str__(self):
-        return self.contactoQueAprueba.nombre + " " + self.contactoQueAprueba.departamento
 class Caso(models.Model):
     ACTIVO = 'ACT'
     CERRADO = 'CERR'
@@ -83,7 +67,6 @@ class Caso(models.Model):
     ]
     dueñoCaso = models.ForeignKey(User, on_delete=models.CASCADE)  # new
     organizacionName = models.ForeignKey(Organizacion, on_delete=models.CASCADE, null=True) 
-    aprobaciones = models.ForeignKey(Aprobaciones, on_delete=models.CASCADE, null= True)
     idCaso = models.CharField(max_length = 254)
     status = models.CharField(max_length=5, choices=ESTADO_APROBACIONES, default=ACTIVO,)
     tramite = models.CharField(max_length = 254) # PDF 
@@ -91,7 +74,24 @@ class Caso(models.Model):
     fecha_fin = models.DateField(null=True,blank=True) # BLANCO HASTA CAMBIAR DE ESTADO CERRADO
     def __str__(self):
         return "Caso: "+self.tramite+" " + self.dueñoCaso.username
-    
+class Aprobaciones(models.Model): #CONTACTO - ESTADO
+    ABIERTO = 'ABI'
+    CERRADO = 'CERR'
+
+    ESTADO_APROBACIONES = [
+        (ABIERTO, 'ABIERTO'),
+        (CERRADO, 'CERRADO'),
+        
+    ]
+    class Meta:
+        verbose_name_plural = "Aprobaciones"
+    #User = models.ForeignKey(User, on_delete=models.CASCADE)
+    caso = models.ForeignKey(Caso, on_delete=models.CASCADE, null=True)
+    contactoQueAprueba = models.ForeignKey(Contacto, on_delete=models.CASCADE)  # new
+    status = models.CharField(max_length=5, choices=ESTADO_APROBACIONES, default=ABIERTO,)
+
+    def __str__(self):
+        return self.contactoQueAprueba.nombre + " " + self.contactoQueAprueba.departamento
 class PowerUp(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)  # new
     name = models.CharField(max_length = 254, default="vacio") # Whasap SMS
