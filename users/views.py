@@ -8,6 +8,8 @@ from django.http import HttpResponse
 from mainApp.forms import CasoForm, ContactoForm, OrganizacionForm
 from mainApp.models import PowerUp , User, Caso, Organizacion, Contacto, Aprobaciones
 import requests
+import datetime
+
 
 # Create your views here.
 @login_required
@@ -15,9 +17,7 @@ def home(request):
     return render(request,"users/index.html")
 
 def salir(request):
-    username = request.user.username
-    pw = PowerUp.objects.filter(User__username = username)
-    print(pw)
+    print(request.__dict__)
     logout(request)
     return redirect("/")
 #Rendering Caso
@@ -37,6 +37,7 @@ def tableCaso(request):
     'tramite': caso.tramite, 
     'status': caso.get_status_display(),
     'fecha_inicio' : caso.fecha_inicio,
+    'fecha_fin' : caso.fecha_fin,
     } 
     for caso in casoQS]
     context = {"casos":casos,"form":form}
@@ -81,13 +82,23 @@ def createCaso(request):
             form.save()
 
     return  redirect("/tableCaso")
-   
+
+def stopCaso(request, id):
+    caso = Caso.objects.get(pk = id)
+    print(caso)
+    caso.status = "INACTIVO" 
+    caso.fecha_fin = datetime.date.today()
+    caso.save()
+    print(caso.status)
+    return  redirect("/tableCaso")
+
+
 @login_required
 def updateCaso(request,id):
     
     print("Caso: ", id)
-    context = Caso.objects.get(idCaso = id)
-    
+    caso = Caso.objects.get(idCaso = id)
+   
     return render(request,"users/update.html")
    
 
