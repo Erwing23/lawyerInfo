@@ -3,7 +3,7 @@ from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout 
 from django.http import HttpResponse
-
+from django.db.models import Q
 
 from mainApp.forms import CasoForm, ContactoForm, OrganizacionForm
 from mainApp.models import PowerUp , User, Caso, Organizacion, Contacto, Aprobaciones
@@ -25,10 +25,9 @@ def salir(request):
 def tableCaso(request):
     username = request.user.username
     #Contexto
-    casoQS = Caso.objects.filter(dueñoCaso__username = username)
+    casoQS = Caso.objects.filter(~Q(status='CERR'),dueñoCaso__username = username)
     form = CasoForm()
     form.fields['organizacionName'].queryset = Organizacion.objects.filter(organizacionUser__username=username)
-    print(casoQS[0].pk )
 
     casos = [
     {'aprobaciones': Aprobaciones.objects.filter(caso__id = caso.pk),
@@ -84,12 +83,26 @@ def createCaso(request):
     return  redirect("/tableCaso")
 
 def stopCaso(request, id):
+    """
+    Cambiar el estado del caso(id) a INACTIVO
+    """
     caso = Caso.objects.get(pk = id)
-    print(caso)
+    if caso.dueñoCaso != request.user:
+        return redirect("/tableCaso")
     caso.status = "INACTIVO" 
     caso.fecha_fin = datetime.date.today()
     caso.save()
-    print(caso.status)
+    return  redirect("/tableCaso")
+
+def deleteCaso(request, id):
+    """
+    Cambiar el estado del caso(id) a CERRADO
+    """
+    caso = Caso.objects.get(pk = id)
+    if caso.dueñoCaso != request.user:
+        return redirect("/tableCaso")
+    caso.status = "CERR" 
+    caso.save()
     return  redirect("/tableCaso")
 
 

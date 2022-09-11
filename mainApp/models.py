@@ -58,12 +58,14 @@ class Contacto(models.Model):
 
 class Caso(models.Model):
     ACTIVO = 'ACT'
+    INACTIVO = 'INACT'
     CERRADO = 'CERR'
     
 
     ESTADO_APROBACIONES = [
         (ACTIVO, 'ACTIVO'),
-        (CERRADO, 'INACTIVO'),     
+        (CERRADO, 'CERRADO'),
+        (INACTIVO, 'INACTIVO')     
     ]
     dueñoCaso = models.ForeignKey(User, on_delete=models.CASCADE)  # new
     organizacionName = models.ForeignKey(Organizacion, on_delete=models.CASCADE, null=True) 

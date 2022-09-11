@@ -1,7 +1,7 @@
 #users/urls.py
 
-from django.urls import path
-from . import views
+from django.urls import path, include
+from . import views, caso_urls
 urlpatterns = [
 
  path('', views.tableCaso, name = "home"),
@@ -9,17 +9,8 @@ urlpatterns = [
 
  path('tableCaso/', views.tableCaso, name="tableCaso"),
  path('tableCaso/createCaso/', views.createCaso, name="createCaso"),
- path('tableCaso/updateCaso/<str:id>/', views.updateCaso, name="updateCaso"),
- path('updateCaso/<str:id>/', views.updateCaso, name="updateCaso"),
- path('stopCaso/<str:id>/', views.stopCaso, name="stopCaso"),
-
-
-
-
  path('tableContactos/', views.tableContacto, name="tableContacto"),
  path('tableContactos/createContacto/', views.createContacto, name="tableContacto"),
-
-
  path('tableOrganizaciones/', views.tableOrganizacion, name="tableOrganizacion"),
  path('tableOrganizaciones/createOrganizacion/', views.createOrganizacion, name="tableOrganizacion"),
 
@@ -28,5 +19,6 @@ urlpatterns = [
  path('powerUps/', views.powerUp, name="powerUp"),
 
 
+ path("",include("users.caso_urls")),
 
 ]
