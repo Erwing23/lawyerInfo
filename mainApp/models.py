@@ -103,6 +103,17 @@ class PowerUp(models.Model):
    
     def __str__(self):
         return self.User.username +" "+ self.name
+class File(models.Model):
+    User = models.ForeignKey(User, on_delete=models.CASCADE)  # new
+    caso = models.ForeignKey(Caso, on_delete=models.CASCADE, null=True)
+
+    fileName = models.CharField(max_length = 254, default="") # Whasap SMS
+    file = models.FileField()
+   
+    def __str__(self):
+        return self.User.username +" "+ self.fileName
+
+
 
 
 

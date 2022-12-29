@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Caso, Organizacion, PowerUp, Aprobaciones, Contacto
+from .models import Caso, Organizacion, PowerUp, Aprobaciones, Contacto, File
 # Register your models here.
 
 class CasoAdmin(admin.ModelAdmin):
@@ -17,9 +17,13 @@ class PowerUpAdmin(admin.ModelAdmin):
 class EstadoAdmin(admin.ModelAdmin):
    # list_display = ("User","id","estadoWhatsapp","estadoSMS")
     list_display = ("id","status")
+class FileAdmin(admin.ModelAdmin):
+   # list_display = ("User","id","estadoWhatsapp","estadoSMS")
+    list_display = ("id","file","fileName","User")
 
 admin.site.register(Caso, CasoAdmin)
 admin.site.register(Organizacion, OrganizacionAdmin)
 admin.site.register(Aprobaciones,AprobacionesAdmin)
 admin.site.register(Contacto, ContactoAdmin)
 admin.site.register(PowerUp,PowerUpAdmin)
+admin.site.register(File,FileAdmin)

@@ -2,11 +2,11 @@ from unicodedata import name
 from django.shortcuts import render , redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout 
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.db.models import Q
 
-from mainApp.forms import CasoForm, ContactoForm, OrganizacionForm
-from mainApp.models import PowerUp , User, Caso, Organizacion, Contacto, Aprobaciones
+from mainApp.forms import CasoForm, ContactoForm, OrganizacionForm, FileForm
+from mainApp.models import PowerUp , User, Caso, Organizacion, Contacto, Aprobaciones, File
 import requests
 import datetime
 
@@ -139,4 +139,32 @@ def createOrganizacion(request):
             form.save()
 
     return  redirect("/tableOrganizaciones")
-  
+
+@login_required
+def file(request,id):
+    username = request.user.username
+    caso = Caso.objects.get(pk = id)
+    if caso.dueñoCaso != request.user:
+        return redirect("/tableCaso")
+    if(request.method == 'POST'):
+        form = FileForm(request.POST,request.FILES)
+        if form.is_valid():
+            fileCaso = form.save(commit = False)
+            fileCaso.User = request.user
+            fileCaso.caso = caso
+
+            form.save()
+        return redirect("/file/"+id)
+    else:
+        #Contexto
+        form = FileForm()
+    fileQS = File.objects.filter(caso__id = id)
+    context = {"form":form,"files":fileQS,"id":id}    
+    return render(request,"users/files.html",context)
+
+@login_required
+def download(request, id):
+    obj = File.objects.get(id=id)
+    filename = obj.file.path
+    response = FileResponse(open(filename, 'rb'))
+    return response

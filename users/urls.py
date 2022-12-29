@@ -14,6 +14,8 @@ urlpatterns = [
  path('tableOrganizaciones/', views.tableOrganizacion, name="tableOrganizacion"),
  path('tableOrganizaciones/createOrganizacion/', views.createOrganizacion, name="tableOrganizacion"),
 
+ path('file/<str:id>', views.file, name="file"),
+ path('download/<str:id>', views.download, name="download"),
 
 
  path('powerUps/', views.powerUp, name="powerUp"),

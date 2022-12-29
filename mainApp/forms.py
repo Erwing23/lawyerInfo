@@ -40,3 +40,12 @@ class OrganizacionForm(ModelForm):
                 'contacto_organizacion': forms.TextInput(attrs={'class': 'form-control','placeholder':'Contacto'}),
                 'email': forms.TextInput(attrs={'class': 'form-control','placeholder':'Correo'}),
          }
+class FileForm(ModelForm):
+    class Meta:
+        model = File
+        exclude = ('User',"caso")
+        widgets = {
+                'fileName': forms.TextInput(attrs={'class': 'form-control','placeholder':'Nombre del Archivo'}),
+                'file': forms.FileInput(attrs={'class': 'form-control','placeholder':'Nombre del Archivo'}),
+
+         }

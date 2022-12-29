@@ -1,0 +1,123 @@
+{% extends 'layouts/base.html' %} {% block title %} Tables {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+  .bg-gradient-primary {
+    background-image: linear-gradient(310deg, #535353 0%, #1b1b1b 100%);
+  }
+</style>
+{% endblock stylesheets %} {% block content %}
+<!--   -->
+{% load static %}
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Añadir Documento</h5>
+        <button
+          type="button"
+          class="btn-close text-dark"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          action="{% url 'file' id%}"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %} {{ form }}
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn bg-gradient-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn bg-gradient-primary">
+              Añadir Archivo
+            </button>
+          </div>
+        </form>
+
+        <!--
+
+
+        -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Archivos del Caso</h6>
+
+          <!-- Boton para Modal de Crear Caso-->
+          <button
+            type="button"
+            class="btn bg-gradient-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Añadir Archivo <i class="ni ni-fat-add"></i>
+          </button>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2"></div>
+        <div class="d-flex flex-wrap">
+          {% for file in files %}
+
+          <div class="w-25">
+            <div class="card">
+              <div
+                class="card-header p-0 mx-3 mt-3 position-relative z-index-1 d-flex justify-content-center"
+              >
+                <img
+                  width="65%"
+                  src="{% static './media/logos/pdf.png' %}"
+                  class="img-fluid border-radius-lg"
+                />
+              </div>
+              <a
+                href="{% url 'download' id=file.id %}"
+                class="card-title h5 d-block text-darker text-center mt-3"
+              >
+                {{file.fileName}}
+              </a>
+              <div class="card-body pt-2 d-flex justify-content-around mt-5">
+                <span class="badge bg-gradient-success">Activo</span>
+                <span class="badge bg-gradient-dark">
+                  <i class="fas fa-cog"></i>Settings</span
+                >
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include "includes/footer.html" %}
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}
